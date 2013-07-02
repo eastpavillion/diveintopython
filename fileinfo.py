@@ -55,10 +55,10 @@ class MP3FileInfo(FileInfo):
         except IOError:
             pass
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, item):
         if key == "name" and item:
             self.__parse(item)
-        FileInfo.__setitem__(self, key, value)
+        FileInfo.__setitem__(self, key, item)
 
 def listDirectory(directory, fileExtList):
     "get list of file info objects for files of particular extensions"
@@ -67,13 +67,13 @@ def listDirectory(directory, fileExtList):
 
     def getFileInfoClass(filename, module=sys.modules[FileInfo.__module__]):
         "get file info class from  filename extension"
-        subclass = "%FileInfo" % os.path.splitext(filename)[1].upper()[1:]
+        subclass = "%sFileInfo" % os.path.splitext(filename)[1].upper()[1:]
         return hasattr(module, subclass) and getattr(module, subclass) or FileInfo
     return [getFileInfoClass(f)(f) for f in fileList]
 
 if __name__ == "__main__":
-#    for info in listDirectory("/c/Book/", [".mp3"]):
-    for info in listDirectory("/Users/lorrainemei/Music",[".mp3"]):
+    for info in listDirectory("c:/Work/", [".mp3"]):
+#    for info in listDirectory("/Users/lorrainemei/Music",[".mp3"]):
         print "\n".join(["%s=%s" % (k, v) for k, v in info.items()])
         print
 
